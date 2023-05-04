@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const postSchema = new Schema({
-  title: { type: String, required: true },
-  author: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  title: { type: String, required: [true, "title is required"] },
+  author: [{ type: Schema.Types.ObjectId, ref: "User", required: [true, "specify the userId"] }],
   gameName: { type: String, required: true },
   genre: { 
     type: String, 
     enum: ["RPG", "Arcade", "", ""],
-    required: true 
+    required: false 
   },
   review: { type: String, required: true },
   image: { type: String },
@@ -18,6 +18,8 @@ const postSchema = new Schema({
     required: true 
   },
   date: { type: Date, default: Date.now }
-});
+  },
+  { timestamps: true }
+);
 
 module.exports = model("Post", postSchema);
