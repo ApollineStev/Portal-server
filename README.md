@@ -1,2 +1,0 @@
-# Portal-server
-backend
