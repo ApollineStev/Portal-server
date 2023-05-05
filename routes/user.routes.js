@@ -10,4 +10,6 @@ router.get("/user", (req, res, next) => {
     
 })
 
+// 🍊 list(saved game)
+
 module.exports = router;
