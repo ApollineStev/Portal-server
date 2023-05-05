@@ -2,6 +2,8 @@
 // https://www.npmjs.com/package/dotenv
 require("dotenv").config();
 
+const mongoose = require("mongoose");
+
 // ℹ️ Connects to the database
 require("./db");
 
