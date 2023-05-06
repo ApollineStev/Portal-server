@@ -20,6 +20,9 @@ app.use("/user", isAuthenticated, userRoutes);
 const postRouter = require("./routes/post.routes");
 app.use("/api", isAuthenticated, postRouter);
 
+const commentRouter = require("./routes/comment.routes");
+app.use("/api", isAuthenticated, commentRouter);
+
 const quizRouter = require("./routes/quiz.routes");
 app.use("/api", isAuthenticated, quizRouter);
 

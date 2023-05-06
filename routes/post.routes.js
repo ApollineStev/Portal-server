@@ -17,7 +17,7 @@ router.get("/posts", (req, res, next) => {
 //  POST /api/posts  -  Creates a new post
 router.post("/posts", (req, res, next) => {
 
-  const author = "" // (req.session) 
+  const { author } = req.body; //(🍊author)
   const { title, gameName, genre, review, image, rating, date } = req.body;
 
   Post.create({ author, title, gameName, genre, review, image, rating, date })
