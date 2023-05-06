@@ -6,7 +6,7 @@ const Post = require("../models/Post.model");
 
 //  GET /api/posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
-  // We use .populate() method to get swap the `_id`s for the actual username
+  // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/posts", (req, res, next) => {
   Post.find()
     .populate("author")
