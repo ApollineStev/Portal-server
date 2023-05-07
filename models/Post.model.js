@@ -7,7 +7,7 @@ const postSchema = new Schema({
   gameName: { type: String, required: true },
   genre: { 
     type: String, 
-    enum: ["RPG", "Arcade", "", ""],
+    enum: ["Action", "Adventure", "MMO", "Puzzle", "RolePlaying", "Simulation", "Sports", "Strategy", "ETC"],
     required: false 
   },
   review: { type: String, required: true },

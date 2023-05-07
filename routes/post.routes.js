@@ -10,17 +10,16 @@ const Post = require("../models/Post.model");
 router.get("/posts", (req, res, next) => {
   Post.find()
     .populate("author")
-    .then((allPosts) => res.json(allPosts))
+    .then((posts) => res.json(posts))
     .catch((err) => res.json(err));
 });
 
 //  POST /api/posts  -  Creates a new post
 router.post("/posts", (req, res, next) => {
 
-  const { author } = req.body; //(🍊author)
-  const { title, gameName, genre, review, image, rating, date } = req.body;
+  const { title, gameName, genre, review, image, rating, date, author } = req.body;
 
-  Post.create({ author, title, gameName, genre, review, image, rating, date })
+  Post.create({ title, author, gameName, genre, review, image, rating, date })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
