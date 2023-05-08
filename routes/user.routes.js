@@ -4,9 +4,13 @@ const mongoose = require("mongoose");
 
 const User = require("../models/User.model");
 
-router.get("/user", (req, res, next) => {
+router.get("/:userId", (req, res, next) => {
     
-    res.json('all good user')
+    const { userId } = req.params
+
+    User.findById(userId)
+    .then(user => res.json(user))
+    .catch(e => res.send(e.message))
     
 })
 

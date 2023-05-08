@@ -17,7 +17,8 @@ const postSchema = new Schema({
     enum: [0, 1, 2, 3, 4, 5],
     required: true 
   },
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }]
   },
   { timestamps: true }
 );
