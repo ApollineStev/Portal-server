@@ -4,12 +4,12 @@ const mongoose = require("mongoose");
 
 const User = require("../models/User.model");
 
-const Review = require("../models/Review.model");
+const Post = require("../models/Review.model");
 
 //  GET /api/posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
-router.get("/review", (req, res, next) => {
+router.get("/posts", (req, res, next) => {
   Review.find()
     .then((allPosts) => res.json(allPosts))
     .catch((err) => res.json(err));
