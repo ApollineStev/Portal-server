@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-const Post = require("../models/Post.model");
+const User = require("../models/User.model");
+
+const Review = require("../models/Review.model");
 
 //  GET /api/posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
-router.get("/posts", (req, res, next) => {
-  Post.find()
-    .populate("author")
+router.get("/review", (req, res, next) => {
+  Review.find()
     .then((allPosts) => res.json(allPosts))
     .catch((err) => res.json(err));
 });
@@ -17,11 +18,16 @@ router.get("/posts", (req, res, next) => {
 //  POST /api/posts  -  Creates a new post
 router.post("/posts", (req, res, next) => {
 
-  const { author } = req.body; //(🍊author)
-  const { title, gameName, genre, review, image, rating, date } = req.body;
+ 
+  const { author, title, gameName, genre, review, image, rating } = req.body;
 
-  Post.create({ author, title, gameName, genre, review, image, rating, date })
-    .then((response) => res.json(response))
+  Post.create({ author, title, gameName, genre, review, image, rating })
+    .then((newPost) => {
+      return User.findByIdAndUpdate(author, {
+        $push: { post : newPost._id },
+      }, { new: true }).populate('post')
+    })
+    .then((post) => res.json(post.post))
     .catch((err) => res.json(err));
 });
 

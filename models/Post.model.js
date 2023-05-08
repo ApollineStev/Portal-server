@@ -7,7 +7,7 @@ const postSchema = new Schema({
   gameName: { type: String, required: true },
   genre: { 
     type: String, 
-    enum: ["RPG", "Arcade", "", ""],
+    enum: ["RPG", "Arcade", "Action", "Horror"],
     required: false 
   },
   review: { type: String, required: true },
@@ -23,4 +23,4 @@ const postSchema = new Schema({
   { timestamps: true }
 );
 
-module.exports = model("Post", postSchema);
+module.exports = model("Review", reviewSchema);
