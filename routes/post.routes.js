@@ -9,14 +9,14 @@ const Post = require("../models/Post.model");
 //  GET /api/posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
-router.get("/posts", (req, res, next) => {
+router.get("/", (req, res, next) => {
   Post.find()
     .then((allPosts) => res.json(allPosts))
     .catch((err) => res.json(err));
 });
 
 //  POST /api/posts  -  Creates a new post
-router.post("/posts/create", (req, res, next) => {
+router.post("/create", (req, res, next) => {
 
  
   const { author, title, gameName, genre, review, image, rating } = req.body;
@@ -32,7 +32,7 @@ router.post("/posts/create", (req, res, next) => {
 });
 
 //  GET /api/posts/:postId -  Retrieves a specific post by id
-router.get("/posts/:postId", (req, res, next) => {
+router.get("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -47,7 +47,7 @@ router.get("/posts/:postId", (req, res, next) => {
 });
 
 // PUT  /api/posts/:postId  -  Updates a specific post by id
-router.put("/posts/:postId", (req, res, next) => {
+router.put("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -61,7 +61,7 @@ router.put("/posts/:postId", (req, res, next) => {
 });
 
 // DELETE  /api/posts/:postId  -  Deletes a specific post by id
-router.delete("/posts/:postId", (req, res, next) => {
+router.delete("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
