@@ -14,7 +14,7 @@ router.get("/posts", (req, res, next) => {
 });
 
 //  POST /api/posts  -  Creates a new post
-router.post("/posts", (req, res, next) => {
+router.post("/create", (req, res, next) => {
 
   const { author, title, gameName, genre, review, image, rating } = req.body;
 
@@ -24,7 +24,7 @@ router.post("/posts", (req, res, next) => {
 });
 
 //  GET /api/posts/:postId -  Retrieves a specific post by id
-router.get("/posts/:postId", (req, res, next) => {
+router.get("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -39,7 +39,7 @@ router.get("/posts/:postId", (req, res, next) => {
 });
 
 // PUT  /api/posts/:postId  -  Updates a specific post by id
-router.put("/posts/:postId", (req, res, next) => {
+router.put("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -53,7 +53,7 @@ router.put("/posts/:postId", (req, res, next) => {
 });
 
 // DELETE  /api/posts/:postId  -  Deletes a specific post by id
-router.delete("/posts/:postId", (req, res, next) => {
+router.delete("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
