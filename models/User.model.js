@@ -18,7 +18,8 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
-    post: [{ type: Schema.Types.ObjectId, ref:'post'}]
+    post: [{ type: Schema.Types.ObjectId, ref:'post'}],
+    quiz: [{ type: Schema.Types.ObjectId, ref:'quiz'}]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

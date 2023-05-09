@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Quiz = require("../models/Quiz.model");
+const User = require("../models/User.model");
 
 // 🍊
 // Get /api/quizzes/random -  Retrieves randomly
@@ -11,15 +12,26 @@ const Quiz = require("../models/Quiz.model");
 
 
 //  POST /api/quizzes  -  Creates a new quiz
-router.post("/quizzes", (req, res, next) => {
+router.post("/quizzes/create", (req, res, next) => {
 
-  const author = "" // (req.session) 
-  const { difficulty, theme, question, answer, date } = req.body;
+  const { difficulty, theme, question, answer, author } = req.body;
 
-  Quiz.create({ author, difficulty, theme, question, answer, date })
-    .then((response) => res.json(response))
+  Quiz.create({ author, difficulty, theme, question, answer })
+    .then((newQuiz) => {
+      return User.findByIdAndUpdate(author, {
+        $push: { quiz: newQuiz._id}
+      }, {new: true}).populate("quiz")
+    })
     .catch((err) => res.json(err));
 });
+
+// Get quizz
+
+router.get('/quizzes', (req, res, next) => {
+  Quiz.find().then(quiz => {
+    res.json(quiz)
+  })
+})
 
 // PUT  /api/quizzes/:quizId  -  Updates a specific quiz by id
 router.put("/quizzes/:quizId", (req, res, next) => {

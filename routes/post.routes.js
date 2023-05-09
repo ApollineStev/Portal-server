@@ -16,7 +16,7 @@ router.get("/posts", (req, res, next) => {
 });
 
 //  POST /api/posts  -  Creates a new post
-router.post("/posts", (req, res, next) => {
+router.post("/posts/create", (req, res, next) => {
 
  
   const { author, title, gameName, genre, review, image, rating } = req.body;
