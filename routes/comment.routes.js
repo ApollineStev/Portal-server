@@ -6,6 +6,8 @@ const Comment = require("../models/Comment.model");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 
+// 🍊comment(author, post, message, date) - get, post, put, delete
+
 router.post("/posts/:postId/comment", (req, res, next) => {
 
   const { postId } = req.params;
@@ -32,6 +34,7 @@ router.post("/posts/:postId/comment", (req, res, next) => {
     .catch((error) => res.json(error));
 
 });
+
 
 
 

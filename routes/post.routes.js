@@ -9,18 +9,17 @@ const Post = require("../models/Post.model");
   // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/posts", (req, res, next) => {
   Post.find()
-    .populate("author")
-    .then((posts) => res.json(posts))
+    .then(posts => res.json(posts))
     .catch((err) => res.json(err));
 });
 
 //  POST /api/posts  -  Creates a new post
 router.post("/posts", (req, res, next) => {
 
-  const { title, gameName, genre, review, image, rating, date, author } = req.body;
+  const { author, title, gameName, genre, review, image, rating } = req.body;
 
-  Post.create({ title, author, gameName, genre, review, image, rating, date })
-    .then((response) => res.json(response))
+  Post.create({ author, title, gameName, genre, review, image, rating })
+    .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });
 
@@ -71,7 +70,6 @@ router.delete("/posts/:postId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// 🍊comment(author, post, message, date) - get, post, put, delete
 
 
 
