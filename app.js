@@ -18,13 +18,13 @@ const userRoutes = require("./routes/user.routes");
 app.use("/user", isAuthenticated, userRoutes);
 
 const postRouter = require("./routes/post.routes");
-app.use("/posts", isAuthenticated, postRouter);
+app.use("/api", isAuthenticated, postRouter);
 
 const commentRouter = require("./routes/comment.routes");
-app.use("/comments", isAuthenticated, commentRouter);
+app.use("/api", isAuthenticated, commentRouter);
 
 const quizRouter = require("./routes/quiz.routes");
-app.use("/quizzes", isAuthenticated, quizRouter);
+app.use("/api", isAuthenticated, quizRouter);
 
 // 🍊route for search?
 

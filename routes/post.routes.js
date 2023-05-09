@@ -14,17 +14,17 @@ router.get("/posts", (req, res, next) => {
 });
 
 //  POST /api/posts  -  Creates a new post
-router.post("/create", (req, res, next) => {
+router.post("/posts", (req, res, next) => {
 
-  const { author, title, gameName, genre, review, image, rating } = req.body;
-
-  Post.create({ author, title, gameName, genre, review, image, rating })
+  const { title, author, gameName, genre, review, rating, date } = req.body;
+  // 🍊 image!!!
+  Post.create({ author, title, gameName, genre, review, rating, date })
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });
 
 //  GET /api/posts/:postId -  Retrieves a specific post by id
-router.get("/:postId", (req, res, next) => {
+router.get("/posts/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -39,7 +39,7 @@ router.get("/:postId", (req, res, next) => {
 });
 
 // PUT  /api/posts/:postId  -  Updates a specific post by id
-router.put("/:postId", (req, res, next) => {
+router.put("/posts/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -53,7 +53,7 @@ router.put("/:postId", (req, res, next) => {
 });
 
 // DELETE  /api/posts/:postId  -  Deletes a specific post by id
-router.delete("/:postId", (req, res, next) => {
+router.delete("/posts/:postId", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
@@ -69,8 +69,5 @@ router.delete("/:postId", (req, res, next) => {
     )
     .catch((error) => res.json(error));
 });
-
-
-
 
 module.exports = router;
