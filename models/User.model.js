@@ -17,10 +17,12 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, "Name is required."],
-    }
+    },
+    description: String,
+    followingUser: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    postsSaved: [{ type: Schema.Types.ObjectId, ref: "Post" }]
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );

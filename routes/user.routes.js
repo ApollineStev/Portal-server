@@ -14,6 +14,6 @@ router.get("/:userId", (req, res, next) => {
     
 })
 
-// 🍊 list(saved game)
+// 🍊 saved posts, my posts, following user's posts
 
 module.exports = router;
