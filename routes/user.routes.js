@@ -14,6 +14,14 @@ router.get("/:userId", (req, res, next) => {
     
 })
 
+router.get("/", (req, res, next) => {
+
+    User.find()
+    .then(user => res.json(user))
+    .catch((err) => res.json(err));
+    
+})
+
 // 🍊 saved posts, my posts, following user's posts
 
 module.exports = router;
