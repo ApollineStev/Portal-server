@@ -21,6 +21,7 @@ router.post("/quizzes/create", (req, res, next) => {
       return User.findByIdAndUpdate(author, {
         $push: { quiz: newQuiz._id}
       }, {new: true}).populate("quiz")
+      
     })
     .catch((err) => res.json(err));
 });
