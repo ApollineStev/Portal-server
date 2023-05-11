@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const fileUploader = require('../config/cloudinary.config')
 
 const Post = require("../models/Post.model");
 
@@ -13,12 +14,27 @@ router.get("/", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
+router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+  
+  res.json({ fileUrl: req.file.path });
+});
+
 //  POST /api/posts  -  Creates a new post
-router.post("/create", (req, res, next) => {
+router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
   const { title, author, gameName, genre, review, rating, date } = req.body;
   // 🍊 image!!!
-  Post.create({ author, title, gameName, genre, review, rating, date })
+  Post.create({ author, title, gameName, genre, review, rating, imageUrl:req.file.path, date })
+    
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });

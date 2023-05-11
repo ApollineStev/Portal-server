@@ -3,6 +3,7 @@ const { Schema, model } = mongoose;
 
 const quizSchema = new Schema({
   author: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  title: { type: String, required: true },
   difficulty: { 
     type: String, 
     enum: ["easy", "intermediate", "difficult"],

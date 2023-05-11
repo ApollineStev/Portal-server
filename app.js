@@ -24,7 +24,7 @@ const commentRouter = require("./routes/comment.routes");
 app.use("/api", isAuthenticated, commentRouter);
 
 const quizRouter = require("./routes/quiz.routes");
-app.use("/api", isAuthenticated, quizRouter);
+app.use("/quizzes", isAuthenticated, quizRouter);
 
 // 🍊route for search?
 

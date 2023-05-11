@@ -11,7 +11,7 @@ const postSchema = new Schema({
     required: false 
   },
   review: { type: String, required: true },
-  image: { type: String },
+  imageUrl: { type: String },
   rating: { 
     type: Number, 
     enum: [0, 1, 2, 3, 4, 5],

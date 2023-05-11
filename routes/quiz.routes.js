@@ -12,15 +12,16 @@ const User = require("../models/User.model");
 
 
 //  POST /api/quizzes  -  Creates a new quiz
-router.post("/quizzes/create", (req, res, next) => {
+router.post("/create", (req, res, next) => {
 
-  const { difficulty, theme, question, answer, author } = req.body;
+  const {title,  difficulty, theme, question, question2, author } = req.body;
 
-  Quiz.create({ author, difficulty, theme, question, answer })
+  Quiz.create({ title, author, difficulty, theme, question, question2 })
     .then((newQuiz) => {
-      return User.findByIdAndUpdate(author, {
+      res.json(newQuiz)
+      /*return User.findByIdAndUpdate(author, {
         $push: { quiz: newQuiz._id}
-      }, {new: true}).populate("quiz")
+      }, {new: true}).populate("quiz")*/
       
     })
     .catch((err) => res.json(err));
@@ -28,14 +29,14 @@ router.post("/quizzes/create", (req, res, next) => {
 
 // Get quizz
 
-router.get('/quizzes', (req, res, next) => {
+router.get('/', (req, res, next) => {
   Quiz.find().then(quiz => {
     res.json(quiz)
   })
 })
 
 // PUT  /api/quizzes/:quizId  -  Updates a specific quiz by id
-router.put("/quizzes/:quizId", (req, res, next) => {
+router.put("/:quizId", (req, res, next) => {
   const { quizId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(quizId)) {
@@ -49,7 +50,7 @@ router.put("/quizzes/:quizId", (req, res, next) => {
 });
 
 // DELETE  /api/quizzes/:quizId  -  Deletes a specific quiz by id
-router.delete("/quizzes/:quizId", (req, res, next) => {
+router.delete("/:quizId", (req, res, next) => {
   const { quizId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(quizId)) {
