@@ -14,7 +14,7 @@ const User = require("../models/User.model");
 //  POST /api/quizzes  -  Creates a new quiz
 router.post("/create", (req, res, next) => {
 
-  const {title,  difficulty, theme, question, question2, author } = req.body;
+  const {title, author, difficulty, theme, question, question2 } = req.body;
 
   Quiz.create({ title, author, difficulty, theme, question, question2 })
     .then((newQuiz) => {
