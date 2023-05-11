@@ -5,7 +5,7 @@ const fileUploader = require('../config/cloudinary.config')
 
 const Post = require("../models/Post.model");
 
-//  GET /api/posts -  Retrieves all posts
+//  GET /posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/", (req, res, next) => {
@@ -16,7 +16,7 @@ router.get("/", (req, res, next) => {
 
 router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
   // console.log("file is: ", req.file)
- 
+
   if (!req.file) {
     next(new Error("No file uploaded!"));
     return;
@@ -28,18 +28,18 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
   res.json({ fileUrl: req.file.path });
 });
 
-//  POST /api/posts  -  Creates a new post
+//  POST /posts  -  Creates a new post
 router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
-  const { title, author, gameName, genre, review, rating, date } = req.body;
+  const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
-  Post.create({ author, title, gameName, genre, review, rating, imageUrl:req.file.path, date })
+  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
     
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });
 
-//  GET /api/posts/:postId -  Retrieves a specific post by id
+//  GET /posts/:postId -  Retrieves a specific post by id
 router.get("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
@@ -54,7 +54,7 @@ router.get("/:postId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// PUT  /api/posts/:postId  -  Updates a specific post by id
+// PUT  /posts/:postId  -  Updates a specific post by id
 router.put("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
@@ -68,7 +68,7 @@ router.put("/:postId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// DELETE  /api/posts/:postId  -  Deletes a specific post by id
+// DELETE  /posts/:postId  -  Deletes a specific post by id
 router.delete("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
