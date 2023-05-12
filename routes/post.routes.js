@@ -55,7 +55,7 @@ router.get("/:postId", (req, res, next) => {
 });
 
 // PUT  /posts/:postId  -  Updates a specific post by id
-router.put("/:postId", (req, res, next) => {
+router.put("/:postId/edit", (req, res, next) => {
   const { postId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
