@@ -20,7 +20,8 @@ const userSchema = new Schema(
     },
     description: String,
     followingUser: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    postsSaved: [{ type: Schema.Types.ObjectId, ref: "Post" }]
+    postsSaved: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    postCreated: [{type: Schema.Types.ObjectId, ref: "Post"}]
   },
   {
     timestamps: true,

@@ -34,6 +34,11 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
   const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
   Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
+     .then((newPost) => {
+      return User.findByIdAndUpdate(userId, {
+        $push: { post: newPost._id}
+      }, {new : true}).populate("post")
+     })
     
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
@@ -49,7 +54,7 @@ router.get("/:postId", (req, res, next) => {
   }
   
   Post.findById(postId)
-    .populate("author")
+    .populate("User")
     .then((post) => res.status(200).json(post))
     .catch((error) => res.json(error));
 });
