@@ -10,6 +10,7 @@ const Post = require("../models/Post.model");
   // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/", (req, res, next) => {
   Post.find()
+    .populate("author")
     .then(posts => res.json(posts))
     .catch((err) => res.json(err));
 });
@@ -32,7 +33,7 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
   const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
-  // 🍊 image!!!
+  
   Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
     
     .then((post) => res.json(post))
@@ -54,7 +55,7 @@ router.get("/:postId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// PUT  /posts/:postId  -  Updates a specific post by id
+// PUT  /posts/:postId/edit  -  Updates a specific post by id
 router.put("/:postId/edit", (req, res, next) => {
   const { postId } = req.params;
 

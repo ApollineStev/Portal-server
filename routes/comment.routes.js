@@ -6,36 +6,69 @@ const Comment = require("../models/Comment.model");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 
-// 🍊comment(author, post, message, date) - get, post, put, delete
+// 🍊comment(author, post, message, date) - get, post, delete
 
-router.post("/posts/:postId/comment", (req, res, next) => {
+router.get("/:postId/comments", (req, res, next) => {
+  const { postId } = req.params;
+
+  Comment.find({ post: postId })
+  .populate("author")
+  .then((comments) => res.status(200).json(comments))
+  .catch((error) => res.json(error));
+
+})
+
+
+router.post("/:postId/comments", (req, res, next) => {
 
   const { postId } = req.params;
-  const { author, message, date } = req.body; //(🍊author)
-
-  User.findOne({ name: author })
-    .then(userFromDB => {
-      user = userFromDB;
-    }) // 🍊check if is necessary!
-    .then(user => {
-      Post.findById(postId)
-      .then(postFromDB => {
-        let newComment = new Comment({ author: user._id, message, date })
-
-        newComment.save()
-        .then(commentFromDB => {
-          postFromDB.comments.push(commentFromDB._id)
-
-          postFromDB.save()
-          .then(updatedPost => res.json(updatedPost))
-        })
-      })
+  const { author, post, message, date } = req.body;
+  
+  Comment.create({author, post, message, date})
+  .then((comment)=>{
+    Post.findById(postId)
+    .then(post => {
+      post.comments.push(comment._id)
+      post.save()
     })
-    .catch((error) => res.json(error));
+    res.json(comment)
+  })
+  .catch((err) => res.json(err));
+  
+
+  /* Post.findById(postId)
+  .then(post => {
+    let newComment = new Comment({ author, message, date })
+
+    newComment.save()
+    .then(newComment => {
+      post.comments.push(newComment._id)
+
+      post.save()
+      .then(updatedPost => res.json(updatedPost))
+    })
+  })
+  .catch((error) => res.json(error)); */
 
 });
 
+router.delete("/:postId/comments/:commentId", (req, res, next) => {
+  const { postId } = req.params;
+  const { commentId } = req.params;
 
+  if (!mongoose.Types.ObjectId.isValid(commentId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Comment.findByIdAndRemove(commentId)
+    .then(() =>
+      res.json({
+        message: `Comment with ${commentId} is removed successfully.`,
+      })
+    )
+    .catch((error) => res.json(error));
+});
 
 
 module.exports = router;
