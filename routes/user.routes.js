@@ -13,6 +13,14 @@ router.get("/:userId", (req, res, next) => {
     .catch(e => res.send(e.message))
     
 })
+ ///// test for delete edit post 
+router.get("/:userId/posts", (req, res, next) => {
+    const { userId } = req.params
+    User.findById(userId).populate('postCreated').then(user => {
+        res.json(user.postCreated)
+    })
+  
+})
 
 router.get("/", (req, res, next) => {
 
