@@ -27,6 +27,7 @@ module.exports = (app) => {
       origin: "*",
     })
   );
+  
 
   // In development environment the app logs
   app.use(logger("dev"));
