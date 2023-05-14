@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const postSchema = new Schema({
   title: { type: String, required: [true, "title is required"] },
-  author: [{ type: Schema.Types.ObjectId, ref: "User", required: [true, "specify the userId"] }],
+  user: [{ type: Schema.Types.ObjectId, ref: "User", required: [true, "specify the userId"] }],
   gameName: { type: String, required: true },
   genre: { 
     type: String, 
@@ -18,7 +18,7 @@ const postSchema = new Schema({
     required: true 
   },
   date: { type: Date, default: Date.now },
-  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }]
+  //comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }]
   },
   { timestamps: true }
 );

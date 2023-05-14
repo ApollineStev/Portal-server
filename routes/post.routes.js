@@ -1,14 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+
 const fileUploader = require('../config/cloudinary.config')
 
 const Post = require("../models/Post.model");
+const User = require('../models/User.model')
 
 //  GET /posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/", (req, res, next) => {
+  User.find()
+  .populate('post')
+  .catch(err => res.json(err))
+
   Post.find()
     .then(posts => res.json(posts))
     .catch((err) => res.json(err));
@@ -31,13 +37,13 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 //  POST /posts  -  Creates a new post
 router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
-  const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
+  const { title, userId, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
-  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
+  Post.create({ title, user: userId , gameName, genre, review, rating, imageUrl, date })
      .then((newPost) => {
       return User.findByIdAndUpdate(userId, {
         $push: { post: newPost._id}
-      }, {new : true}).populate("post")
+      })
      })
     
     .then((post) => res.json(post))
@@ -55,21 +61,23 @@ router.get("/:postId", (req, res, next) => {
   }
   
   Post.findById(postId)
-    .populate("User")
+    .populate("user")
     .then((post) => res.status(200).json(post))
     .catch((error) => res.json(error));
 });
 
 // PUT  /posts/:postId  -  Updates a specific post by id
-router.put("/:postId/edit", (req, res, next) => {
+router.post("/:postId/edit", (req, res, next) => {
   const { postId } = req.params;
+
+  const { title, userId, gameName, genre, review, rating, imageUrl, date } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
 
-  Post.findByIdAndUpdate(postId, req.body, { new: true })
+  Post.findByIdAndUpdate(postId,{ title, user: userId , gameName, genre, review, rating, imageUrl, date }, { new: true })
     .then((updatedPost) => res.json(updatedPost))
     .catch((error) => res.json(error));
 });

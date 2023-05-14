@@ -19,9 +19,9 @@ const userSchema = new Schema(
       required: [true, "Name is required."],
     },
     description: String,
-    followingUser: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    postsSaved: [{ type: Schema.Types.ObjectId, ref: "Post" }],
-    postCreated: [{type: Schema.Types.ObjectId, ref: "Post"}]
+    /*followingUser: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    postsSaved: [{ type: Schema.Types.ObjectId, ref: "Post" }],*/
+    post: [{type: Schema.Types.ObjectId, ref: "Post"}]
   },
   {
     timestamps: true,
