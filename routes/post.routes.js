@@ -48,6 +48,7 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 router.get("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
+
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
