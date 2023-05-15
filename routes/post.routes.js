@@ -36,12 +36,7 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
   const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
-  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date, comment: [] })
-    .then((newPost) => {
-      return User.findByIdAndUpdate(author, {
-        $push: { post: newPost._id}
-      })
-    })
+  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date/*, comment: []*/ })
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });
@@ -73,7 +68,7 @@ router.put("/:postId/edit", (req, res, next) => {
     return;
   }
 
-  Post.findByIdAndUpdate(postId,{ title, author: user._id , gameName, genre, review, rating, imageUrl, date }, { new: true })
+  Post.findByIdAndUpdate(postId,{ title, author, gameName, genre, review, rating, imageUrl, date }, { new: true })
     .then((updatedPost) => res.json(updatedPost))
     .catch((error) => res.json(error));
 });
