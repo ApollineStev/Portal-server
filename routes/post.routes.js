@@ -11,8 +11,9 @@ const User = require('../models/User.model')
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/", (req, res, next) => {
-  User.find()
-  .populate('post')
+  Post.find()
+  .populate('comment')
+  .then(allPost => res.json(allPost))
   .catch(err => res.json(err))
 
   Post.find()
@@ -39,7 +40,7 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
   const { title, userId, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
-  Post.create({ title, user: userId , gameName, genre, review, rating, imageUrl, date })
+  Post.create({ title, user: userId , gameName, genre, review, rating, imageUrl, date, comment: [] })
      .then((newPost) => {
       return User.findByIdAndUpdate(userId, {
         $push: { post: newPost._id}
@@ -61,13 +62,13 @@ router.get("/:postId", (req, res, next) => {
   }
   
   Post.findById(postId)
-    .populate("user")
+    .populate("comment")
     .then((post) => res.status(200).json(post))
     .catch((error) => res.json(error));
 });
 
 // PUT  /posts/:postId  -  Updates a specific post by id
-router.post("/:postId/edit", (req, res, next) => {
+router.put("/:postId/edit", (req, res, next) => {
   const { postId } = req.params;
 
   const { title, userId, gameName, genre, review, rating, imageUrl, date } = req.body;
