@@ -45,16 +45,15 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 router.get("/:postId", (req, res, next) => {
   const { postId } = req.params;
 
-
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
   
   Post.findById(postId)
-    .populate("User")
-    .then((post) => res.status(200).json(post))
-    .catch((error) => res.json(error));
+  .populate("author")
+  .then((post) => res.status(200).json(post))
+  .catch((error) => res.json(error));
 });
 
 // PUT  /posts/:postId/edit  -  Updates a specific post by id

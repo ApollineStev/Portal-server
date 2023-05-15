@@ -18,7 +18,7 @@ const postSchema = new Schema({
     required: true 
   },
   date: { type: Date, default: Date.now },
-  //comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }]
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }]
   },
   { timestamps: true }
 );

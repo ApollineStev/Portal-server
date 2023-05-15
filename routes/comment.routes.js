@@ -51,10 +51,11 @@ router.post("/:postId/comments", (req, res, next) => {
 
 });
 
-router.delete("/:postId/comments/:commentId", (req, res, next) => {
+router.delete("/:postId/comments", (req, res, next) => {
   const { postId } = req.params;
-  const { commentId } = req.params;
 
+  const commentId = req.body.comment._id
+  
   if (!mongoose.Types.ObjectId.isValid(commentId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
