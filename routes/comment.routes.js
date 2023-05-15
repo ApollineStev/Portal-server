@@ -8,32 +8,15 @@ const Post = require("../models/Post.model");
 
 // 🍊comment(author, post, message, date) - get, post, put, delete
 
-router.post("/:postId/comment", (req, res, next) => {
-
+router.get("/:postId/comments", (req, res, next) => {
   const { postId } = req.params;
-  const { author, message, date } = req.body; //(🍊author)
+  
+  Comment.find({ post: postId })
+  .populate("author")
+  .then((comments) => res.status(200).json(comments))
+  .catch((error) => res.json(error));
 
-  User.findOne({ name: author })
-    .then(userFromDB => {
-      user = userFromDB;
-    }) // 🍊check if is necessary!
-    .then(user => {
-      Post.findById(postId)
-      .then(postFromDB => {
-        let newComment = new Comment({ author: user._id, message, date })
-
-        newComment.save()
-        .then(commentFromDB => {
-          postFromDB.comments.push(commentFromDB._id)
-
-          postFromDB.save()
-          .then(updatedPost => res.json(updatedPost))
-        })
-      })
-    })
-    .catch((error) => res.json(error));
-
-});
+})
 
 router.post("/:postId/comments", (req, res, next) => {
 
