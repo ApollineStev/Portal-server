@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+
 const fileUploader = require('../config/cloudinary.config')
 
 const Post = require("../models/Post.model");
+const User = require('../models/User.model')
 
 //  GET /posts -  Retrieves all posts
   // Each Post document has `author` array holding `_id`s of User documents 
@@ -33,14 +35,13 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
   const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
-  
-  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
+  // 🍊 image!!!
+  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date, comment: [] })
     .then((newPost) => {
-      return User.findByIdAndUpdate(userId, {
+      return User.findByIdAndUpdate(author, {
         $push: { post: newPost._id}
-      }, {new : true}).populate("post")
+      })
     })
-    
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });
@@ -48,6 +49,7 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 //  GET /posts/:postId -  Retrieves a specific post by id
 router.get("/:postId", (req, res, next) => {
   const { postId } = req.params;
+
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -64,12 +66,14 @@ router.get("/:postId", (req, res, next) => {
 router.put("/:postId/edit", (req, res, next) => {
   const { postId } = req.params;
 
+  const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
+
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
 
-  Post.findByIdAndUpdate(postId, req.body, { new: true })
+  Post.findByIdAndUpdate(postId,{ title, author: user._id , gameName, genre, review, rating, imageUrl, date }, { new: true })
     .then((updatedPost) => res.json(updatedPost))
     .catch((error) => res.json(error));
 });

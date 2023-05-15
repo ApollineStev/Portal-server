@@ -6,8 +6,7 @@ const Comment = require("../models/Comment.model");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 
-// 🍊comment(author, post, message, date) - get, post, delete
-
+// 🍊comment(author, post, message, date) - get, post, put, delete
 router.get("/:postId/comments", (req, res, next) => {
   const { postId } = req.params;
   
@@ -17,7 +16,6 @@ router.get("/:postId/comments", (req, res, next) => {
   .catch((error) => res.json(error));
 
 })
-
 
 router.post("/:postId/comments", (req, res, next) => {
 
@@ -75,6 +73,4 @@ router.delete("/:postId/comments/:commentId", (req, res, next) => {
     )
     .catch((error) => res.json(error));
 });
-
-
 module.exports = router;
