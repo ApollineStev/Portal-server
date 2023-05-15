@@ -35,11 +35,11 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
   const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
   
   Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
-     .then((newPost) => {
+    .then((newPost) => {
       return User.findByIdAndUpdate(userId, {
         $push: { post: newPost._id}
       }, {new : true}).populate("post")
-     })
+    })
     
     .then((post) => res.json(post))
     .catch((err) => res.json(err));

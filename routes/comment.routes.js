@@ -10,7 +10,7 @@ const Post = require("../models/Post.model");
 
 router.get("/:postId/comments", (req, res, next) => {
   const { postId } = req.params;
-
+  
   Comment.find({ post: postId })
   .populate("author")
   .then((comments) => res.status(200).json(comments))
@@ -62,10 +62,16 @@ router.delete("/:postId/comments/:commentId", (req, res, next) => {
   }
 
   Comment.findByIdAndRemove(commentId)
-    .then(() =>
+    .then(() => {
+      Post.findById(postId)
+      .then(post => {
+        post.comments.filter(!commentId)
+        post.save()
+      })
       res.json({
         message: `Comment with ${commentId} is removed successfully.`,
       })
+    }
     )
     .catch((error) => res.json(error));
 });
