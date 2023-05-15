@@ -11,9 +11,9 @@ const User = require('../models/User.model')
   // Each Post document has `author` array holding `_id`s of User documents 
   // We use .populate() method to get swap the `_id`s for the actual name
 router.get("/", (req, res, next) => {
-  Post.find()
-  .populate('comment')
-  .then(allPost => res.json(allPost))
+  User.find()
+  .populate('post')
+  //.then(allPost => res.json(allPost))
   .catch(err => res.json(err))
 
   Post.find()
@@ -38,13 +38,11 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 //  POST /posts  -  Creates a new post
 router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
-  const { title, userId, gameName, genre, review, rating, imageUrl, date } = req.body;
+  const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
-  Post.create({ title, user: userId , gameName, genre, review, rating, imageUrl, date, comment: [] })
+  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date/*, comment: []*/ })
      .then((newPost) => {
-      return User.findByIdAndUpdate(userId, {
-        $push: { post: newPost._id}
-      })
+      res.json(newPost)
      })
     
     .then((post) => res.json(post))
@@ -71,14 +69,14 @@ router.get("/:postId", (req, res, next) => {
 router.put("/:postId/edit", (req, res, next) => {
   const { postId } = req.params;
 
-  const { title, userId, gameName, genre, review, rating, imageUrl, date } = req.body;
+  const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
 
-  Post.findByIdAndUpdate(postId,{ title, user: userId , gameName, genre, review, rating, imageUrl, date }, { new: true })
+  Post.findByIdAndUpdate(postId,{ title, author , gameName, genre, review, rating, imageUrl, date }, { new: true })
     .then((updatedPost) => res.json(updatedPost))
     .catch((error) => res.json(error));
 });
