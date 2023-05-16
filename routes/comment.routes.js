@@ -13,7 +13,11 @@ router.get("/:postId/comments", (req, res, next) => {
   
   Comment.find({ post: postId })
   .populate("author")
-  .then((comments) => res.status(200).json(comments))
+  .then((comments) => { 
+     res.status(200).json(comments)
+     console.log(comments)
+    })
+     
   .catch((error) => res.json(error));
 
 })
@@ -25,12 +29,19 @@ router.post("/:postId/comments", (req, res, next) => {
   
   Comment.create({author, post, message, date})
   .then((comment)=>{
-    Post.findById(postId)
-    .then(post => {
-      post.comments.push(comment._id)
-      post.save()
+
+    User.findOne({_id: comment.author}).then(author => {
+
+      Post.findById(postId)
+      .then(post => {
+        post.comments.push(comment._id)
+        post.save()
+        res.json({comment, author})
+      })
+
     })
-    res.json(comment)
+
+    
   })
   .catch((err) => res.json(err));
   
