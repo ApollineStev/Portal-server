@@ -15,7 +15,6 @@ router.get("/:postId/comments", (req, res, next) => {
   .populate("author")
   .then((comments) => { 
     res.status(200).json(comments)
-    console.log(comments)
   })
   .catch((error) => res.json(error));
 
