@@ -29,8 +29,8 @@ router.post("/:postId/comments", (req, res, next) => {
     .then(post => {
       post.comments.push(comment._id)
       post.save()
+      res.json(comment)
     })
-    res.json(comment)
   })
   .catch((err) => res.json(err));
   
