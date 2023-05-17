@@ -14,10 +14,8 @@ router.get("/:postId/comments", (req, res, next) => {
   Comment.find({ post: postId })
   .populate("author")
   .then((comments) => { 
-     res.status(200).json(comments)
-     console.log(comments)
-    })
-     
+    res.status(200).json(comments)
+  })
   .catch((error) => res.json(error));
 
 })
@@ -38,27 +36,10 @@ router.post("/:postId/comments", (req, res, next) => {
         post.save()
         res.json({comment, author})
       })
-
     })
-
     
   })
   .catch((err) => res.json(err));
-  
-
-  /* Post.findById(postId)
-  .then(post => {
-    let newComment = new Comment({ author, message, date })
-
-    newComment.save()
-    .then(newComment => {
-      post.comments.push(newComment._id)
-
-      post.save()
-      .then(updatedPost => res.json(updatedPost))
-    })
-  })
-  .catch((error) => res.json(error)); */
 
 });
 
@@ -92,8 +73,7 @@ router.delete("/:postId/comments", (req, res, next) => {
       res.json({
         message: `Comment with ${commentId} is removed successfully.`,
       })
-    }
-    )
-    .catch((error) => res.json(error));*/
+    })
+    .catch((error) => res.json(error));
 });
 module.exports = router;

@@ -36,7 +36,7 @@ router.post("/create", fileUploader.single('imageUrl'), (req, res, next) => {
 
   const { title, author, gameName, genre, review, rating, imageUrl, date } = req.body;
   // 🍊 image!!!
-  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date/*, comment: []*/ })
+  Post.create({ title, author, gameName, genre, review, rating, imageUrl, date })
     .then((post) => res.json(post))
     .catch((err) => res.json(err));
 });
