@@ -63,7 +63,17 @@ router.post("/:postId/comments", (req, res, next) => {
 });
 
 router.delete("/:postId/comments", (req, res, next) => {
-  const { postId } = req.params;
+   const { commentId } = req.params
+   Comment.findOneAndDelete({_id: commentId })
+     .then(comment => {
+      res.json(comment)
+     })
+
+
+
+
+
+  /*const { postId } = req.params;
 
   const commentId = req.body.comment._id
   
@@ -84,6 +94,6 @@ router.delete("/:postId/comments", (req, res, next) => {
       })
     }
     )
-    .catch((error) => res.json(error));
+    .catch((error) => res.json(error));*/
 });
 module.exports = router;
