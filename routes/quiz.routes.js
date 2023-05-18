@@ -5,10 +5,11 @@ const mongoose = require("mongoose");
 const Quiz = require("../models/Quiz.model");
 const User = require("../models/User.model");
 
-// 🍊
-// Get /api/quizzes/random -  Retrieves randomly
-// Get /api/quizzes/difficulty?easy -  Retrieves quiz by difficulty (easy, intermediate, difficult)
-// Get /api/quizzes/theme?retro -  Retrieves quiz by theme (retro, new, online, adventure, ...)
+
+// Get /quizzes/random -  Retrieves randomly
+// 🍊 query&params -> useLocation
+// Get /quizzes/difficulty?easy -  Retrieves quiz by difficulty
+// Get /quizzes/genre?action -  Retrieves quiz by theme
 
 
 //  POST /quizzes/create  -  Creates a new quiz
