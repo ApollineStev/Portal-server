@@ -43,37 +43,29 @@ router.post("/:postId/comments", (req, res, next) => {
 
 });
 
-router.delete("/:postId/comments", (req, res, next) => {
-   const { commentId } = req.params
-   Comment.findOneAndDelete({_id: commentId })
-     .then(comment => {
-      res.json(comment)
-     })
+router.delete("/:postId/comments/:commentId", (req, res, next) => {
+  const { postId } = req.params;
+  const { commentId } = req.params;
 
-
-
-
-
-  /*const { postId } = req.params;
-
-  const commentId = req.body.comment._id
-  
   if (!mongoose.Types.ObjectId.isValid(commentId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
 
   Comment.findByIdAndRemove(commentId)
-    .then(() => {
-      Post.findById(postId)
+    .then(comment => {
+      Post.findByIdAndUpdate(postId)
       .then(post => {
-        post.comments.filter(!commentId)
+        post.comments.pull(commentId)
         post.save()
-      })
-      res.json({
-        message: `Comment with ${commentId} is removed successfully.`,
+        res.json({
+          message: `Comment with ${commentId} is removed successfully.`,
+        })
       })
     })
     .catch((error) => res.json(error));
+
+
 });
+
 module.exports = router;

@@ -11,7 +11,7 @@ const quizSchema = new Schema({
   },
   theme: { 
     type: String, 
-    enum: ["retro", "new", "online", "adventure"],
+    enum: ["Action", "Adventure", "MMO", "Puzzle", "RolePlaying", "Simulation", "Sports", "Strategy"],
     required: true 
   },
   question: { type: String, required: true },
