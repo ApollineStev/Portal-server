@@ -11,12 +11,12 @@ const User = require("../models/User.model");
 // Get /api/quizzes/theme?retro -  Retrieves quiz by theme (retro, new, online, adventure, ...)
 
 
-//  POST /api/quizzes  -  Creates a new quiz
+//  POST /quizzes/create  -  Creates a new quiz
 router.post("/create", (req, res, next) => {
 
-  const {title, author, difficulty, theme, question, question2 } = req.body;
+  const {author, question, genre, difficulty, answer, answer2, answer3, answer4 } = req.body;
 
-  Quiz.create({ title, author, difficulty, theme, question, question2 })
+  Quiz.create({ author, question, genre, difficulty, answer, answer2, answer3, answer4 })
     .then((newQuiz) => {
       res.json(newQuiz)
       /*return User.findByIdAndUpdate(author, {
@@ -27,15 +27,14 @@ router.post("/create", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-// Get quizz
-
+// Get /quizzes
 router.get('/', (req, res, next) => {
   Quiz.find().then(quiz => {
     res.json(quiz)
   })
 })
 
-// PUT  /api/quizzes/:quizId  -  Updates a specific quiz by id
+// PUT  /quizzes/:quizId  -  Updates a specific quiz by id
 router.put("/:quizId", (req, res, next) => {
   const { quizId } = req.params;
 
@@ -49,7 +48,7 @@ router.put("/:quizId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// DELETE  /api/quizzes/:quizId  -  Deletes a specific quiz by id
+// DELETE  /quizzes/:quizId  -  Deletes a specific quiz by id
 router.delete("/:quizId", (req, res, next) => {
   const { quizId } = req.params;
 
