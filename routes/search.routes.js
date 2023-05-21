@@ -7,55 +7,39 @@ const Quiz = require('../models/Quiz.model');
 const User = require('../models/User.model');
 const Comment = require("../models/Comment.model")
 
-
 router.get('/search', (req, res, next) => {
   
-  const { keyword } = req.query;
-  console.log({keyword})
+  const lowercaseKeyword = req.query.keyword.toLowerCase();
+  const keywordRegex = new RegExp(lowercaseKeyword, 'i')
 
-  Post.find({ $or: [
-    {'title': { $regex: keyword }}, 
-    {'gameName': { $regex: keyword }},
-    {'genre': { $regex: keyword }},
-    {'review': { $regex: keyword }}
+  const postPromise = Post.find({ $or: [
+    {'title': { $regex: keywordRegex }}, 
+    {'gameName': { $regex: keywordRegex }},
+    {'genre': { $regex: keywordRegex }},
+    {'review': { $regex: keywordRegex }}
   ]})
-  .then(results => res.status(200).json(results))
-  .catch((err) => res.json(err))
-  /* .then(results => {
-    Quiz.find({ $or: [
-      {'question': { $regex: keyword }}, 
-      {'genre': { $regex: keyword }}
-    ]})
-    .then(results => {
-      User.find({ $or: [
-        {'name': { $regex: keyword }}, 
-        {'description': { $regex: keyword }}
-      ]})
-      .then(results => {
-        Comment.find({ $or: [
-          {'message': { $regex: keyword }}
-        ]}) */
-      
-    
+  const quizPromise = Quiz.find({ $or: [
+    {'question': { $regex: keywordRegex }}, 
+    {'genre': { $regex: keywordRegex }}
+  ]})
+  const userPromise = User.find({ $or: [
+    {'name': { $regex: keywordRegex }}, 
+    {'description': { $regex: keywordRegex }}
+  ]})
+  const commentPromise = Comment.find({ 'message': { $regex: keywordRegex } })
+  
+  Promise.all([postPromise, quizPromise, userPromise, commentPromise])
+    .then(([postResults, quizResults, userResults, commentResults]) => {
+      const combinedResults = {
+        posts: postResults,
+        quizzes: quizResults,
+        users: userResults,
+        comments: commentResults
+      };
+      res.status(200).json(combinedResults);
+    })
+    .catch((err) => res.status(500).json(err))
   
 })
-
-/* router.get('/search?keyword=:keyword', (req, res, next) => {
-  
-  const { keyword } = req.params;
-
-  Post.find({ $or: [
-    {'title': { $regex: keyword }}, 
-    {'gameName': { $regex: keyword }},
-    {'genre': { $regex: keyword }},
-    {'review': { $regex: keyword }}
-  ]})
-  
-        .then(results => res.status(200).json(results))
-      
-    
-  .catch((err) => res.json(err))
-}) */
-
 
 module.exports = router;
