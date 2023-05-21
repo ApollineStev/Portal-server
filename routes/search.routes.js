@@ -8,9 +8,10 @@ const User = require('../models/User.model');
 const Comment = require("../models/Comment.model")
 
 
-router.get('/', (req, res, next) => {
+router.get('/search', (req, res, next) => {
   
   const { keyword } = req.query;
+  console.log({keyword})
 
   Post.find({ $or: [
     {'title': { $regex: keyword }}, 
@@ -18,6 +19,8 @@ router.get('/', (req, res, next) => {
     {'genre': { $regex: keyword }},
     {'review': { $regex: keyword }}
   ]})
+  .then(results => res.status(200).json(results))
+  .catch((err) => res.json(err))
   /* .then(results => {
     Quiz.find({ $or: [
       {'question': { $regex: keyword }}, 
@@ -32,11 +35,27 @@ router.get('/', (req, res, next) => {
         Comment.find({ $or: [
           {'message': { $regex: keyword }}
         ]}) */
+      
+    
+  
+})
+
+/* router.get('/search?keyword=:keyword', (req, res, next) => {
+  
+  const { keyword } = req.params;
+
+  Post.find({ $or: [
+    {'title': { $regex: keyword }}, 
+    {'gameName': { $regex: keyword }},
+    {'genre': { $regex: keyword }},
+    {'review': { $regex: keyword }}
+  ]})
+  
         .then(results => res.status(200).json(results))
       
     
   .catch((err) => res.json(err))
-})
+}) */
 
 
 module.exports = router;

@@ -27,7 +27,7 @@ const quizRouter = require("./routes/quiz.routes");
 app.use("/quizzes", isAuthenticated, quizRouter);
 
 const searchRouter = require("./routes/search.routes");
-app.use("/search", searchRouter);
+app.use("/", searchRouter);
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
