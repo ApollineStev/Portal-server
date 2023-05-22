@@ -27,7 +27,7 @@ router.get('/search', (req, res, next) => {
   ]})
   
   
-  Promise.all([postPromise, quizPromise, userPromise, commentPromise])
+  Promise.all([postPromise, quizPromise, userPromise])
     .then(([postResults, quizResults, userResults]) => {
       const combinedResults = {
         posts: postResults,

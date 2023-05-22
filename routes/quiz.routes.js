@@ -6,6 +6,13 @@ const Quiz = require("../models/Quiz.model");
 const User = require("../models/User.model");
 
 
+/* router.get('/', (req, res, next) => {
+  Quiz.find()
+    .then(quizzes => res.json(quizzes))
+    .catch((err) => res.json(err));
+}) */
+
+
 // Get /quizzes/random -  Retrieves randomly
 router.get('/random', (req, res, next) => {
   Quiz.estimatedDocumentCount().then((count) => {
@@ -25,25 +32,18 @@ router.get('/:quizId', (req, res, next) => {
     return;
   }
 
-  Quiz.findById(quizId).then(quiz => {
-    res.status(200).json(quiz)
-  })
+  Quiz.findById(quizId).then(quiz => res.status(200).json(quiz))
   .catch((error) => res.json(error));
 })
 
 // Get /quizzes/easy -  Retrieves a quiz by difficulty
-router.get('/easy', (req, res, next) => {
-  
-  let EasyQuiz = Quiz.find({ difficulty: "easy" })
-  console.log(EasyQuiz)
 
-  EasyQuiz.estimatedDocumentCount()
-  .then((count) => {
-    let random = Math.floor(Math.random() * count)
-    EasyQuiz.findOne().skip(random)
-    .then(randomQuiz => res.status(200).json(randomQuiz))
-  })
+router.get('/easy', (req, res, next) => {
+    
+  Quiz.find({ difficulty: "easy" })
+  .then((easyQuiz) => res.status(200).json(easyQuiz))
   .catch((error) => res.json(error));
+
 })
 
 router.get('/intermediate', (req, res, next) => {
