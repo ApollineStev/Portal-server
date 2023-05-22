@@ -7,7 +7,18 @@ const User = require("../models/User.model");
 
 
 // Get /quizzes/random -  Retrieves randomly
-// 🍊 query&params -> useLocation
+router.get('/random', (req, res, next) => {
+  Quiz.estimatedDocumentCount().then((count) => {
+    let random = Math.floor(Math.random() * count)
+
+    Quiz.findOne().skip(random)
+    .populate('author')
+    .then(randomQuiz => res.json(randomQuiz))
+  })
+})
+
+
+// 🍊 query&params?
 // Get /quizzes/difficulty?easy -  Retrieves quiz by difficulty
 // Get /quizzes/genre?action -  Retrieves quiz by theme
 
