@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post.model");
 const Quiz = require('../models/Quiz.model');
 const User = require('../models/User.model');
-const Comment = require("../models/Comment.model")
 
 router.get('/search', (req, res, next) => {
   
@@ -26,15 +25,14 @@ router.get('/search', (req, res, next) => {
     {'name': { $regex: keywordRegex }}, 
     {'description': { $regex: keywordRegex }}
   ]})
-  const commentPromise = Comment.find({ 'message': { $regex: keywordRegex } })
+  
   
   Promise.all([postPromise, quizPromise, userPromise, commentPromise])
-    .then(([postResults, quizResults, userResults, commentResults]) => {
+    .then(([postResults, quizResults, userResults]) => {
       const combinedResults = {
         posts: postResults,
         quizzes: quizResults,
         users: userResults,
-        comments: commentResults
       };
       res.status(200).json(combinedResults);
     })
