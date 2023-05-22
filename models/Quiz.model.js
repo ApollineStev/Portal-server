@@ -17,7 +17,8 @@ const quizSchema = new Schema({
   answer: { type: String, required: true },
   answer2: { type: String, required: true },
   answer3: { type: String, required: true },
-  answer4: { type: String, required: true }
+  answer4: { type: String, required: true },
+  message: { type: String, required: false }
   
 },
 {

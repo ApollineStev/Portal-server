@@ -26,9 +26,9 @@ router.get('/random', (req, res, next) => {
 //  POST /quizzes/create  -  Creates a new quiz
 router.post("/create", (req, res, next) => {
 
-  const {author, question, genre, difficulty, answer, answer2, answer3, answer4 } = req.body;
+  const {author, question, genre, difficulty, answer, answer2, answer3, answer4, message } = req.body;
 
-  Quiz.create({ author, question, genre, difficulty, answer, answer2, answer3, answer4 })
+  Quiz.create({ author, question, genre, difficulty, answer, answer2, answer3, answer4, message })
     .then((newQuiz) => {
       res.json(newQuiz)
       /*return User.findByIdAndUpdate(author, {
