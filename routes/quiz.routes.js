@@ -5,13 +5,12 @@ const mongoose = require("mongoose");
 const Quiz = require("../models/Quiz.model");
 const User = require("../models/User.model");
 
-
-/* router.get('/', (req, res, next) => {
+// Get /quizzes/all -  Retrieves all quizzes
+router.get('/all', (req, res, next) => {
   Quiz.find()
-    .then(quizzes => res.json(quizzes))
-    .catch((err) => res.json(err));
-}) */
-
+    .then(quizzes => res.status(200).json(quizzes))
+    .catch((error) => res.status(500).json(error));
+})
 
 // Get /quizzes/random -  Retrieves randomly
 router.get('/random', (req, res, next) => {
@@ -20,7 +19,7 @@ router.get('/random', (req, res, next) => {
     Quiz.findOne().skip(random)
     .then(randomQuiz => res.status(200).json(randomQuiz))
   })
-  .catch((error) => res.json(error));
+  .catch((error) => res.status(500).json(error));
 })
 
 // Get /quizzes/:quizId -  Retrieves a specific quiz by id
@@ -33,11 +32,10 @@ router.get('/:quizId', (req, res, next) => {
   }
 
   Quiz.findById(quizId).then(quiz => res.status(200).json(quiz))
-  .catch((error) => res.json(error));
+  .catch((error) => res.status(500).json(error));
 })
 
 // Get /quizzes/difficulty/easy -  Retrieves a quiz by difficulty
-
 router.get('/difficulty/easy', (req, res, next) => {
   
   Quiz.countDocuments({ 'difficulty': "easy" })
@@ -62,23 +60,17 @@ router.get('/difficulty/intermediate', (req, res, next) => {
   .catch((error) => res.status(500).json(error));
 })
 
-router.get('/difficulty/difficult', (req, res, next) => {
+router.get('/difficulty/hard', (req, res, next) => {
   
-  Quiz.countDocuments({ 'difficulty': "difficult" })
+  Quiz.countDocuments({ 'difficulty': "hard" })
   .then((count) => {
     let random = Math.floor(Math.random() * count)
-    Quiz.findOne({ 'difficulty': "difficult" }).skip(random)
-    .then(randomDifficultQuiz => res.status(200).json(randomDifficultQuiz))
+    Quiz.findOne({ 'difficulty': "hard" }).skip(random)
+    .then(randomHardQuiz => res.status(200).json(randomHardQuiz))
     .catch((error) => res.status(500).json(error));
   })
   .catch((error) => res.status(500).json(error));
 })
-
-
-
-// 🍊 query&params?
-// Get /quizzes/genre?action -  Retrieves quiz by theme
-
 
 
 //  POST /quizzes/create  -  Creates a new quiz
@@ -87,14 +79,8 @@ router.post("/create", (req, res, next) => {
   const {author, question, genre, difficulty, answer, answer2, answer3, answer4, message } = req.body;
 
   Quiz.create({ author, question, genre, difficulty, answer, answer2, answer3, answer4, message })
-    .then((newQuiz) => {
-      res.json(newQuiz)
-      /*return User.findByIdAndUpdate(author, {
-        $push: { quiz: newQuiz._id}
-      }, {new: true}).populate("quiz")*/
-      
-    })
-    .catch((err) => res.json(err));
+    .then((newQuiz) => res.status(200).json(newQuiz))
+    .catch((error) => res.status(500).json(error));
 });
 
 
@@ -108,8 +94,8 @@ router.put("/:quizId", (req, res, next) => {
   }
 
   Quiz.findByIdAndUpdate(quizId, req.body, { new: true })
-    .then((updatedQuiz) => res.json(updatedQuiz))
-    .catch((error) => res.json(error));
+    .then((updatedQuiz) => res.status(200).json(updatedQuiz))
+    .catch((error) => res.status(500).json(error));
 });
 
 // DELETE  /quizzes/:quizId  -  Deletes a specific quiz by id
@@ -123,11 +109,11 @@ router.delete("/:quizId", (req, res, next) => {
 
   Quiz.findByIdAndRemove(quizId)
     .then(() =>
-      res.json({
+      res.status(200).json({
         message: `Quiz with ${quizId} is removed successfully.`,
       })
     )
-    .catch((error) => res.json(error));
+    .catch((error) => res.status(500).json(error));
 });
 
 module.exports = router;

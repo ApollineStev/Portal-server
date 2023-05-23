@@ -11,7 +11,7 @@ const quizSchema = new Schema({
   },
   difficulty: { 
     type: String, 
-    enum: ["easy", "intermediate", "difficult"],
+    enum: ["easy", "intermediate", "hard"],
     required: true 
   },
   answer: { type: String, required: true },
