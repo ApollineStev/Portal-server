@@ -13,7 +13,11 @@ const cookieParser = require("cookie-parser");
 // unless the request is made from the same domain, by default express wont accept POST requests
 const cors = require("cors");
 
+<<<<<<< HEAD
 const FRONTEND_URL = process.env.ORIGIN || "https://portal-project.netlify.app/";
+=======
+const FRONTEND_URL = process.env.ORIGIN || "https://portal-project.netlify.app";
+>>>>>>> 43ecdc1d56e0cdfaeb9acd616036720436b37f18
 
 // Middleware configuration
 module.exports = (app) => {
