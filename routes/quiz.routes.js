@@ -85,9 +85,11 @@ router.post("/create", (req, res, next) => {
 
 
 // PUT  /quizzes/:quizId  -  Updates a specific quiz by id
-router.put("/:quizId", (req, res, next) => {
+router.put("/:quizId/edit", (req, res, next) => {
   const { quizId } = req.params;
 
+  const { question, genre, difficulty, answer, answer2, answer3, answer4, message }  = req.body;
+  
   if (!mongoose.Types.ObjectId.isValid(quizId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;

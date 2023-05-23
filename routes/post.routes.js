@@ -67,7 +67,7 @@ router.put("/:postId/edit", (req, res, next) => {
     return;
   }
 
-  Post.findByIdAndUpdate(postId,{ title, author, gameName, genre, review, rating, imageUrl, date }, { new: true })
+  Post.findByIdAndUpdate(postId, req.body, { new: true })
     .then((updatedPost) => res.json(updatedPost))
     .catch((error) => res.json(error));
 });
