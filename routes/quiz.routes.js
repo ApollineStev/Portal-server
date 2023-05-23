@@ -36,33 +36,47 @@ router.get('/:quizId', (req, res, next) => {
   .catch((error) => res.json(error));
 })
 
-// Get /quizzes/easy -  Retrieves a quiz by difficulty
+// Get /quizzes/difficulty/easy -  Retrieves a quiz by difficulty
 
-router.get('/easy', (req, res, next) => {
-    
-  Quiz.find({ difficulty: "easy" })
-  .then((easyQuiz) => res.status(200).json(easyQuiz))
-  .catch((error) => res.json(error));
-
-})
-
-router.get('/intermediate', (req, res, next) => {
+router.get('/difficulty/easy', (req, res, next) => {
   
-  let IntermediateQuiz = Quiz.find({ difficulty: intermediate })
-  
-  IntermediateQuiz.estimatedDocumentCount()
+  Quiz.countDocuments({ 'difficulty': "easy" })
   .then((count) => {
     let random = Math.floor(Math.random() * count)
-    IntermediateQuiz.findOne().skip(random)
-    .then(randomQuiz => res.status(200).json(randomQuiz))
+    Quiz.findOne({ 'difficulty': "easy" }).skip(random)
+    .then(randomEasyQuiz => res.status(200).json(randomEasyQuiz))
+    .catch((error) => res.status(500).json(error));
   })
-  .catch((error) => res.json(error));
-
+  .catch((error) => res.status(500).json(error));
 })
+
+router.get('/difficulty/intermediate', (req, res, next) => {
+  
+  Quiz.countDocuments({ 'difficulty': "intermediate" })
+  .then((count) => {
+    let random = Math.floor(Math.random() * count)
+    Quiz.findOne({ 'difficulty': "intermediate" }).skip(random)
+    .then(randomIntermediateQuiz => res.status(200).json(randomIntermediateQuiz))
+    .catch((error) => res.status(500).json(error));
+  })
+  .catch((error) => res.status(500).json(error));
+})
+
+router.get('/difficulty/difficult', (req, res, next) => {
+  
+  Quiz.countDocuments({ 'difficulty': "difficult" })
+  .then((count) => {
+    let random = Math.floor(Math.random() * count)
+    Quiz.findOne({ 'difficulty': "difficult" }).skip(random)
+    .then(randomDifficultQuiz => res.status(200).json(randomDifficultQuiz))
+    .catch((error) => res.status(500).json(error));
+  })
+  .catch((error) => res.status(500).json(error));
+})
+
 
 
 // 🍊 query&params?
-// Get /quizzes/difficulty?easy -  Retrieves quiz by difficulty
 // Get /quizzes/genre?action -  Retrieves quiz by theme
 
 
