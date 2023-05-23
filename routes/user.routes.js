@@ -4,14 +4,15 @@ const mongoose = require("mongoose");
 
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
+const Quiz = require("../models/Quiz.model")
 
 router.get("/:userId", (req, res, next) => {
     
     const { userId } = req.params
 
     User.findById(userId)
-    .then(user => res.json(user))
-    .catch(e => res.send(e.message))
+    .then(user => res.status(200).json(user))
+    .catch((error) => res.status(500).json(error));
     
 })
 
@@ -26,30 +27,31 @@ router.put("/:userId/edit", (req, res, next) => {
     }
 
     User.findByIdAndUpdate(userId, { name, description }, { new: true })
-    .then((updatedUser) => res.json(updatedUser))
-    .catch((error) => res.json(error));
+    .then((updatedUser) => res.status(200).json(updatedUser))
+    .catch((error) => res.status(500).json(error));
 });
 
-
-
-///// test for delete edit post 
 router.get("/:userId/posts", (req, res, next) => {
     const { userId } = req.params
 
     Post.find({ author: userId })
     .then(posts => {
         console.log(posts)
-        res.json(posts)
+        res.status(200).json(posts)
     })
+    .catch((error) => res.status(500).json(error));
 })
 
-/* router.get("/", (req, res, next) => {
+router.get("/:userId/quizzes", (req, res, next) => {
+    const { userId } = req.params
 
-    User.find()
-    .then(user => res.json(user))
-    .catch((err) => res.json(err));
-    
-}) */
+    Quiz.find({ author: userId })
+    .then(posts => {
+        console.log(posts)
+        res.status(200).json(posts)
+    })
+    .catch((error) => res.status(500).json(error));
+})
 
 // 🍊 saved posts, my posts, following user's posts
 
